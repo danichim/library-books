@@ -16,16 +16,18 @@
           </div>
           <div class="product-list-item-info">
             <h1 class="product-list-item-title">
-              <h4>{{ book.value }}</h4>
+              {{ book.value }}
             </h1>
-            <span class="product-list-item-author">{{ book.authors.length > 1 ? book.authors.join(", ")  : book.authors[0]}} </span>
+            <div class="book-subtitle" v-if="book.subtitle">{{ book.subtitle }}</div>
             <ul class="product-list-item-details">
+              <li><strong>Autor</strong>: {{ book.authors.length > 1 ? book.authors.join(", ")  : book.authors[0]}}</li>
               <li><strong>Editura</strong>: {{book.publisher}}</li>
               <li><strong>Categorii</strong>: {{ book.categories.length > 1 ? book.categories.join(", ")  : book.categories[0] }}</li>
             </ul>
             <div class="product-list-item-share">
               <div>
                 <el-button plain type="text" class="button" @click="details(book)">Details</el-button>
+                <el-button plain type="text" class="button" @click="preview(book)">Preview</el-button>
                 <el-button v-if="currentUser.administrator" plain type="text" class="button" @click="removeBook(book['.key'])">Delete</el-button>
               </div>
             </div>
@@ -68,6 +70,10 @@
       details(book) {
         eventHub.$emit('open-modal', book)
       },
+      preview(book) {
+        var win = window.open(book.preview, '_blank');
+        win.focus();
+      },
       removeBook(key) {
         booksRef.child(key).remove();
         this.$notify({
@@ -84,7 +90,7 @@
     components: { BookDetails },
     mounted() {
       this.loading = true;
-      booksRef.on('value', () => { //when data arrived
+      booksRef.on('value', (c) => { //when data arrived
         this.loading = false;
       })
     }

@@ -108,6 +108,7 @@
         cb(json.items.map(e => {
           return {
             value: e.volumeInfo.title,
+            googleId: e.id,
             title: e.volumeInfo.title || '',
             subtitle: e.volumeInfo.subtitle || '',
             description: e.volumeInfo.description || '',
@@ -115,9 +116,17 @@
             pageCount: e.volumeInfo.pageCount || '',
             categories: e.volumeInfo.categories || '',
             publisherDate: e.volumeInfo.publisherDate || '',
+            printType: e.volumeInfo.printType || '',
             publisher: e.volumeInfo.publisher || '',
             authors: e.volumeInfo.authors || '',
-            preview: e.volumeInfo.previewLink || ''
+            preview: e.volumeInfo.previewLink || '',
+            ratingsCount: e.volumeInfo.ratingsCount || '',
+            averageRating: e.volumeInfo.averageRating || '',
+            maturityRating: e.volumeInfo.maturityRating || '',
+            mainCategory: e.volumeInfo.mainCategory || '',
+            language: e.volumeInfo.language || '',
+            ISBN_10: e.volumeInfo.industryIdentifiers[0].identifier || '',
+            ISBN_13: e.volumeInfo.industryIdentifiers[1].identifier || ''
           }
         }));
       }).catch(ex => {
