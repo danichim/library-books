@@ -1,7 +1,9 @@
 import firebase from 'firebase';
 import firebaseUiAuthCss from './vendors/firebase-ui-auth.css'; /* eslint no-unused-vars: 0 */
 import firebaseui from 'firebaseui';
-import { database } from './firebaseInstance'
+import { database } from './firebaseInstance';
+import config from '../config/globalConf';
+
 const user = {
   displayName: '',
   email: '',
@@ -10,6 +12,7 @@ const user = {
   uid: '',
   administrator: false,
   intern: false,
+  sentEmail: false,
 };
 
 const usersRef = database.ref('users');
@@ -21,7 +24,6 @@ const initAuthUI = function initAuthUI() {
     signInSuccessUrl: '/dashboard',
     signInOptions: [
       // Leave the lines as is for the providers you want to offer your users.
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
     ],
     // Terms of service url.
@@ -42,10 +44,16 @@ const init = function init() {
       user.emailVerified = theUser.emailVerified;
       user.photoURL = theUser.photoURL;
       user.uid = theUser.uid;
-      user.administrator = theUser.uid === 'sttvIyjiqGVUwmhXoy4lTPgyJSl1';
+      user.administrator = theUser.uid === config.adminRole;
       user.lastLoggedIn = new Date();
       user.intern = theUser.email.includes('@assist.ro');
-      usersRef.child(firebase.auth().currentUser.uid).update(user);
+      if (!theUser.sentEmail) {
+        firebase.auth().currentUser.sendEmailVerification();
+        user.sentEmail = true;
+      }
+      if (!theUser.emailVerified && user.intern && (Date.now() > new Date(new Date(theUser.createdDate).getTime() + 1000 * 60 * 60 * 24))) {
+        firebase.auth().currentUser.sendEmailVerification();
+      }
     } else {
       user.displayName = '';
       user.email = '';
@@ -54,6 +62,8 @@ const init = function init() {
       user.uid = '';
       user.administrator = false;
       user.intern = false;
+      user.sentEmail = false;
+      user.createdDate = new Date();
       initAuthUI();
     }
   }, (error) => {

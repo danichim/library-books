@@ -75,6 +75,7 @@
 <script>
   import Vue from 'vue';
   import { mapActions } from 'vuex';
+  import config from '../../../config/globalConf';
   import { database } from '../../firebaseInstance';
 
   const booksRef = database.ref('books');
@@ -95,10 +96,8 @@
     }
   });
 
-
-  const apiKey = "AIzaSyBPhoh6CYEtQ2SQhhU5XzK-OwB9WIfteCE";
   function querySearchAsync (queryString, cb) {
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=${queryString}&key=${apiKey}`)
+    fetch(`https://www.${config.googleBooksApiUrl}?q=${queryString}&key=${config.googleBooksApiKey}`)
       .then(response => {
         return response.json()
       })

@@ -53,18 +53,24 @@ const router = new Router({
     {
       path: '/resources',
       name: 'resources',
+      meta: {
+        requiresAuth: true,
+      },
       component: Resources,
     },
     {
       path: '/nas',
       name: 'nas',
+      meta: {
+        requiresAuth: true,
+      },
       component: Nas,
     },
     {
       path: '*',
       name: 'notFound',
       component: NotFound,
-    }
+    },
   ],
 });
 
