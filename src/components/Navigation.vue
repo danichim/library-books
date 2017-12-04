@@ -10,7 +10,7 @@
       <template slot="title">{{ displayName }}</template>
       <el-menu-item index="2-2" v-on:click="logout">Logout</el-menu-item>
     </el-submenu>
-    <el-menu-item v-else class="toggle-login2" v-bind:class="{ hidden: isLoggedIn }" index="5"><router-link v-bind:to="'login'">Login</router-link></el-menu-item>
+    <el-menu-item v-else class="toggle-login2" v-bind:class="{ hidden: isLoggedIn }" index="login"><router-link v-bind:to="'login'">Login</router-link></el-menu-item>
   </el-menu>
 </template>
 

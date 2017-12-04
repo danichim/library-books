@@ -3,7 +3,7 @@ node_modules/
 dist/
 npm-debug.log
 test/unit/coverage
-config/firebase.config.js
+config/globalConf.js
 
 .idea
 

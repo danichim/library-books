@@ -2,7 +2,7 @@
   "name": "library",
   "version": "1.0.0",
   "description": "A simple library application",
-  "author": "dmfarcas <dan.farcas@assist.ro>",
+  "author": "dan ichim <dan.ichim@assist.ro>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
