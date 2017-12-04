@@ -9,6 +9,7 @@ const user = {
   photoURL: '',
   uid: '',
   administrator: false,
+  intern: false,
 };
 
 const usersRef = database.ref('users');
@@ -43,6 +44,7 @@ const init = function init() {
       user.uid = theUser.uid;
       user.administrator = theUser.uid === 'sttvIyjiqGVUwmhXoy4lTPgyJSl1';
       user.lastLoggedIn = new Date();
+      user.intern = theUser.email.includes('@assist.ro');
       usersRef.child(firebase.auth().currentUser.uid).update(user);
     } else {
       user.displayName = '';
@@ -51,6 +53,7 @@ const init = function init() {
       user.photoURL = '';
       user.uid = '';
       user.administrator = false;
+      user.intern = false;
       initAuthUI();
     }
   }, (error) => {

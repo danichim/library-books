@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Login from 'components/Login';
 import Admin from 'components/Admin/Admin';
 import Dashboard from 'components/User/Dashboard';
+import Books from 'components/User/Books';
 import Resources from 'components/Resources';
 import Nas from 'components/Nas';
 import NotFound from 'components/NotFound';
@@ -40,6 +41,14 @@ const router = new Router({
         requiresAuth: true,
       },
       component: Dashboard,
+    },
+    {
+      path: '/books',
+      name: 'books',
+      meta: {
+        requiresAuth: true,
+      },
+      component: Books,
     },
     {
       path: '/resources',

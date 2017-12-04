@@ -18,7 +18,7 @@
 
     <borrow :bookKey="currentBook['.key']"></borrow>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="dialogVisible = false">Done</el-button>
+      <el-button type="primary" @click="dialogVisible = false">Close</el-button>
     </span>
   </el-dialog>
 </template>

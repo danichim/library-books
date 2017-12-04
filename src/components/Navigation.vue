@@ -1,8 +1,9 @@
 <template>
   <el-menu :router="true" theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
     <el-menu-item index="dashboard" class="logo-header"><img src="../assets/logo-assist.png" alt="" width="100"></el-menu-item>
-    <el-menu-item index="dashboard">Dashboard</el-menu-item>
+    <el-menu-item index="dashboard">Browse</el-menu-item>
     <el-menu-item v-if="isAdmin" index="admin">Admin</el-menu-item>
+    <el-menu-item v-if="isLoggedIn" index="books">My Books</el-menu-item>
     <el-menu-item index="resources">Resources</el-menu-item>
     <el-menu-item index="nas">NAS</el-menu-item>
     <el-submenu v-if="isLoggedIn" class="toggle-login2" index="2">

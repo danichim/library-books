@@ -1,21 +1,22 @@
 <template>
+
   <div class="main-container">
     <h3 class="text-center">Browse Books</h3>
     <el-row :gutter="20" v-if="filtru">
       <el-col :span="11" :offset="5">
         <el-input
-          placeholder="Cauta cartea"
+          placeholder="Search book"
           v-model="textFiltru"
-          clearable>
+          size="medium"/>
         </el-input>
       </el-col>
       <el-col :span="1">
         <el-button @click="clearFilter" type="text">Reset</el-button>
       </el-col>
     </el-row>
-    <el-row :gutter="20" v-if="filtru"><p class="text-center">{{ answer }}</p></el-row>
-    <el-row :gutter="20">
-      <books></books>
+    <el-row :gutter="20"><p class="text-center"><span v-if="textFiltru.length > 0">{{ answer }}</span></p></el-row>
+    <el-row >
+      <books :filtruCarti="textFiltru"></books>
     </el-row>
   </div>
 </template>
@@ -31,24 +32,21 @@ export default {
   data: () => {
     return {
       textFiltru: "",
-      answer: "All books",
-      filtru: false
+      answer: "",
+      filtru: true
     };
   },
   methods: {
     getBooksFiltered: _.debounce(function() {
-      if (this.textFiltru.length < 3) {
-        this.answer = "Cautarea se face dupa 3 caractere. ;-)";
+      if (this.textFiltru.length < 4) {
+        this.answer = "Search need more than 3 chars. ;-)";
         return
       }
-      this.answer = "Thinking...";
-      var vm = this;
-      //TODO: call to filter books by this.textFiltru
+      this.answer = 'Results for : ' + this.textFiltru;
     }, 500),
     clearFilter() {
       if (this.textFiltru.length) {
         this.textFiltru = "";
-        //TODO: reset all books
       }
     }
   },

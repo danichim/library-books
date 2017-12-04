@@ -14,52 +14,29 @@
   </div>
 </template>
 
-<style scoped>
-  .el-autocomplete {
-    width: 100%;
-  }
+<style>
 
   .container-search {
     margin-top: 9px;
   }
-  li {
-    line-height: normal;
-    padding: 7px;
-    position: relative;
-  }
-  .title {
-    margin-left: 15px;
-    display: inline;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  .description {
-    font-size: 12px;
-    margin-left: 15px;
-  }
-  .authors {
-    margin-left: 15px;
+  .my-autocomplete ul li .authors {
+    /* margin-left: 15px;
     font-size: 12px;
     color: #b4b4b4;
-    line-height: 12px;
+    line-height: 12px; */
   }
-  .img-search {
-    float: left;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    height: 100px;
-    display: inline;
-  }
-  .el-autocomplete-suggestion li {
+  .my-autocomplete ul li {
     margin: 4px 0;
+    margin-right: 15px;
   }
-
-  .el-autocomplete {
+  .my-autocomplete .el-scrollbar__bar.is-vertical {
+    width: 12px;
+  }
+  .container-search .el-autocomplete {
     width: 70% !important;
     display: block !important;
     margin: 10px auto !important;
   }
-
   .el-autocomplete-suggestion li img {
     max-width: 80px;
     max-height: 250px;
@@ -67,11 +44,31 @@
     float: left;
     margin-right: 20px;
   }
+  .my-autocomplete .title {
+    text-overflow: ellipsis;
+    display: inline;
+        position: relative;
 
-  .authors {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .my-autocomplete .authors {
     font-size: 10px;
-    position: relative;
-    bottom: 20px;
+    color: #48576a;
+    line-height: 12px;
+    margin-bottom: 5px;
+  }
+
+  .my-autocomplete li,
+  .my-autocomplete li.hidden:nth-child(even) + .my-autocomplete li:nth-of-type(odd) + .my-autocomplete li:nth-of-type(even),
+  .my-autocomplete li.hidden:nth-child(even) + .my-autocomplete li.hidden:nth-child(odd) ~ .my-autocomplete li:nth-of-type(odd) {
+      background: #c6c6c6;
+  }
+
+  .my-autocomplete li:nth-child(even),
+  .my-autocomplete li.hidden:nth-child(even) ~ .my-autocomplete li:nth-of-type(odd),
+  .my-autocomplete li.hidden:nth-child(even) + .my-autocomplete li.hidden:nth-child(odd) ~ .my-autocomplete li:nth-of-type(even) {
+      background: #e0e0e0;
   }
 </style>
 
@@ -88,8 +85,9 @@
       var item = ctx.props.item;
       return h('li', ctx.data, [
         h('img', { attrs: { src: item.image.smallThumbnail, class: 'img-search' } }, []),
-        h('div', { attrs: { class: 'title' } }, [item.value]),
-        h('div', { attrs: { class: 'authors' } }, [item.authors])
+        h('div', { class: 'title' } , [item.value]),
+        h('div', { class: 'authors' }, [item.authors]),
+        h('div', { class: 'subtitle' }, [item.subtitle])
       ]);
     },
     props: {
@@ -125,8 +123,7 @@
             maturityRating: e.volumeInfo.maturityRating || '',
             mainCategory: e.volumeInfo.mainCategory || '',
             language: e.volumeInfo.language || '',
-            ISBN_10: e.volumeInfo.industryIdentifiers[0].identifier || '',
-            ISBN_13: e.volumeInfo.industryIdentifiers[1].identifier || ''
+            ISBN: e.volumeInfo.industryIdentifiers || ''
           }
         }));
       }).catch(ex => {

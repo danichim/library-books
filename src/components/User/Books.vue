@@ -1,58 +1,67 @@
 <template>
-  <div class="book-container">
-    <el-row v-loading.body="loading">
-      <div class="product-list-container clearfix">
-        <article class="product-list-item clearfix" v-for="book in filterBooks">
-          <a @click="details(book['.key'])" class="product-list-item-image-container cursor-hover">
-              <img class="product-list-item-image" :src="book.image.thumbnail" alt="alternative-image">
-          </a>
-          <div class="product-list-item-price">
-            <div class="price-container">
-              <div class="price-old-container clearfix">
-                <span class="price-percent">Pagini</span>
+  <div class="main-container">
+    <el-row>
+    <el-col :span="24">
+      <div id="list">
+        <h3 class="text-center">Your Books</h3>
+        <el-row v-loading.body="loading" v-if="filterBooks.length > 0">
+          <div class="product-list-container clearfix">
+            <article class="product-list-item clearfix" v-for="book in filterBooks">
+              <a @click="details(book['.key'])" class="product-list-item-image-container cursor-hover">
+                  <img class="product-list-item-image" :src="book.image.thumbnail" alt="alternative-image">
+              </a>
+              <div class="product-list-item-price">
+                <div class="price-container">
+                  <div class="price-old-container clearfix">
+                    <span class="price-percent">Pagini</span>
+                  </div>
+                  <span class="price-good">{{book.pageCount}}</span>
+                </div>
               </div>
-              <span class="price-good">{{book.pageCount}}</span>
-            </div>
-          </div>
-          <div class="product-list-item-info">
-            <h1 class="product-list-item-title">
-              {{ book.value }}
-            </h1>
-            <div class="book-subtitle" v-if="book.subtitle">{{ book.subtitle }}</div>
-            <ul class="product-list-item-details">
-              <li><strong>Autor</strong>: {{ book.authors.length > 1 ? book.authors.join(", ")  : book.authors[0]}}</li>
-              <li><strong>Editura</strong>: {{book.publisher}}</li>
-              <li><strong>Categorii</strong>: {{ book.categories.length > 1 ? book.categories.join(", ")  : book.categories[0] }}</li>
-            </ul>
-            <div class="product-list-item-share">
-              <div>
-                <el-button plain type="text" class="button" @click="details(book)">Details</el-button>
-                <el-button plain type="text" class="button" @click="preview(book)">Preview</el-button>
-                <el-button v-if="currentUser.administrator" plain type="text" class="button" @click="removeBook(book['.key'])">Delete</el-button>
+              <div class="product-list-item-info">
+                <h1 class="product-list-item-title">
+                  {{ book.value }}
+                </h1>
+                <div class="book-subtitle" v-if="book.subtitle">{{ book.subtitle }}</div>
+                <ul class="product-list-item-details">
+                  <li><strong>Autor</strong>: {{ book.authors.length > 1 ? book.authors.join(", ")  : book.authors[0]}}</li>
+                  <li><strong>Editura</strong>: {{book.publisher}}</li>
+                  <li><strong>Categorii</strong>: {{ book.categories.length > 1 ? book.categories.join(", ")  : book.categories[0] }}</li>
+                </ul>
+                <div class="product-list-item-share">
+                  <div>
+                    <el-button plain type="text" class="button" @click="details(book)">Details</el-button>
+                    <el-button plain type="text" class="button" @click="preview(book)">Preview</el-button>
+                    <el-button v-if="currentUser.administrator" plain type="text" class="button" @click="removeBook(book['.key'])">Delete</el-button>
+                  </div>
+                </div>
               </div>
-            </div>
+            </article>
           </div>
-        </article>
-      </div>
+        </el-row>
+        <div v-else><span class="align-center">No found</span></div>
+      <book-details></book-details>
+    </div>
+    </el-col>
     </el-row>
-    <book-details></book-details>
   </div>
 </template>
 
 <script>
   import Vue from 'vue';
   import Vuex from 'vuex';
-  import BookDetails from './BookDetails';
-  import { database } from '../firebaseInstance'
-  import eventHub from '../EventHub'
+  import BookDetails from '../BookDetails';
+  import { database } from '../../firebaseInstance'
+  import eventHub from '../../EventHub'
   import firebase from 'firebase';
   import _ from 'lodash';
-  import { logout, getUser } from '../auth';
+  import { logout, getUser } from '../../auth';
 
   const currentUser = getUser();
   const booksRef = database.ref('books');
   const borrowsRef = database.ref('borrows');
   const usersRef = database.ref('users');
+  const userBorrowsRef = database.ref(`borrows/`);
 
   export default Vue.extend({
     props: ['filtruCarti'],
@@ -68,6 +77,7 @@
       books: booksRef,
       borrows: borrowsRef,
       users: usersRef,
+      userBorrows: userBorrowsRef
     },
     methods: {
       details(book) {
@@ -91,18 +101,17 @@
     },
     computed: {
       filterBooks: function () {
-        let filteredBooks = {};
+        let filteredBooks = [];
         var vm = this;
-        if (this.filtruCarti) {
-          if (this.filtruCarti.length > 3) {
-            return filteredBooks = _.filter(this.books, function(b) {
-              if((b.value.toLowerCase().includes(vm.filtruCarti.toLowerCase())) || (b.description.toLowerCase().includes(vm.filtruCarti.toLowerCase()))) {
-                return b;
+        if (this.userBorrows.length) {
+            _.filter(this.borrows, function(b) {
+              if (vm.currentUser.uid === b['currentlyAt']) {
+                filteredBooks.push(_.find(vm.books, ['.key', b['.key']]));
               }
             });
-          }
+            return filteredBooks;
         } else {
-          return this.books
+          return this.borrows
         }
       },
     },
@@ -115,7 +124,7 @@
     }
   });
 </script>
-<style>
+<style scoped>
   .product-list-container {
     border-bottom: solid 1px #b8b8b8;
     margin-bottom: 1.875em;
