@@ -11,7 +11,7 @@ const user = {
   photoURL: '',
   uid: '',
   administrator: false,
-  intern: false
+  intern: false,
 };
 
 const usersRef = database.ref('users');
@@ -38,6 +38,7 @@ const initAuthUI = function initAuthUI() {
 const init = function init() {
   firebase.auth().onAuthStateChanged((theUser) => {
     if (theUser) {
+      firebase.auth().currentUser.reload()
       user.displayName = theUser.displayName;
       user.email = theUser.email;
       user.emailVerified = theUser.emailVerified;
@@ -46,12 +47,7 @@ const init = function init() {
       user.administrator = theUser.uid === config.adminRole;
       user.lastLoggedIn = new Date();
       user.intern = theUser.email.includes('@assist.ro');
-      if (!theUser.emailVerified && user.intern && !theUser.sentEmail) {
-        firebase.auth().currentUser.sendEmailVerification();
-        user.sentEmail = true;
-      }
       usersRef.child(firebase.auth().currentUser.uid).update(user);
-      firebase.auth().currentUser.reload()
     } else {
       user.displayName = '';
       user.email = '';
@@ -60,7 +56,6 @@ const init = function init() {
       user.uid = '';
       user.administrator = false;
       user.intern = false;
-      user.sentEmail = false;
       user.createdDate = new Date();
       initAuthUI();
     }

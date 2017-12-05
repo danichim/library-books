@@ -1,8 +1,7 @@
 <template>
-
-  <div class="main-container">
+  <div class="main-container" v-if="currentUser.emailVerified">
     <h3 class="text-center">Browse Books</h3>
-    <el-row :gutter="20" v-if="filtru">
+    <el-row :gutter="20">
       <el-col :span="11" :offset="5">
         <el-input
           placeholder="Search book"
@@ -19,13 +18,19 @@
       <books :filtruCarti="textFiltru"></books>
     </el-row>
   </div>
+  <validate-email v-else />
 </template>
 
 <script>
 import firebase from "firebase";
 import { database } from "../../firebaseInstance";
 import Books from "../Books";
+import ValidateEmail from "../User/ValidateEmail";
+import ResetPassword from "../User/ResetPassword";
 import _ from "lodash";
+import { logout, getUser } from '../../auth';
+
+const currentUser = getUser();
 
 export default {
   name: "dashboard",
@@ -33,7 +38,9 @@ export default {
     return {
       textFiltru: "",
       answer: "",
-      filtru: true
+      txt: '',
+      filtru: true,
+      currentUser: currentUser
     };
   },
   methods: {
@@ -50,7 +57,7 @@ export default {
       }
     }
   },
-  components: { Books },
+  components: { Books, ValidateEmail, ResetPassword },
   watch: {
     textFiltru: function() {
       if (this.textFiltru.length === 0) {

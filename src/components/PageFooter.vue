@@ -1,6 +1,11 @@
 <template>
   <footer class="footer">
     <div class="container">
+      <div class="footer-main" v-if="!currentUser.emailVerified"  @click="resendEmail">
+        <div class="footer-main-title">Resend validate?</div>
+        <div class="footer-main-link" v-html="txt">
+        </div>
+      </div>
       <div class="footer-social">
         <img src="../assets/logo-assist.png" alt="" width="100" style="margin-top:30px;">
       </div>
@@ -11,9 +16,27 @@
 <script>
 
   import Vue from 'vue';
+  import firebase from "firebase";
+  import { getUser } from '../auth';
+
+  const currentUser = getUser();
 
   export default Vue.extend({
-    components: {  }
+    data: () => {
+      return {
+        currentUser: currentUser,
+        txt: 'click here to resend email'
+      };
+    },
+    methods: {
+      resendEmail() {
+        let currentUser = firebase.auth().currentUser;
+        if (!currentUser.emailVerified) {
+          firebase.auth().currentUser.sendEmailVerification();
+          this.txt = `An email was send to your address: <strong>${this.currentUser.email}</strong> go to <a href="http://mail.assist.ro" target="_blank">inbox</a>`;
+        }
+      }
+    }
   });
 </script>
 
@@ -41,7 +64,8 @@
   .footer .footer-main {
     font-size: 0;
     padding-top: 40px;
-    display: inline-block
+    display: inline-block;
+    cursor: pointer;
   }
 
   .footer .footer-main .footer-main-title {
@@ -55,7 +79,8 @@
     margin: 12px 18px 0 0;
     line-height: 1;
     font-size: 12px;
-    color: #768193
+    color: #768193;
+    cursor: pointer;
   }
 
   .footer .footer-main .footer-main-link a {

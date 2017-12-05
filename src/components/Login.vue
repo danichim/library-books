@@ -6,12 +6,13 @@
         <div id="firebaseui-auth-container"></div>
       </div>
     </article>
-
+    <reset-password />
   </div>
 </template>
 
 <script>
   import firebase from 'firebase';
+  import ResetPassword from './User/ResetPassword';
   import { init, getUser } from '../auth';
 
   const user = getUser();
@@ -22,11 +23,17 @@
   export default {
     name: 'login',
     data() {
-      return { user };
+      return {
+        user,
+        email: '',
+        password: '',
+        nume: '',
+      };
     },
-    methods: { },
-    created: initApp,
+    methods: {
+    },
     events: {
-    }
+    },
+    components: { ResetPassword }
   };
 </script>
