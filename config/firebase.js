@@ -7,7 +7,10 @@ const config = {
   messagingSenderId: "929443717219",
   googleBooksApiUrl: "googleapis.com/books/v1/volumes",
   googleBooksApiKey: "AIzaSyBPhoh6C123YEtQ2SQhhU5512XzK-OwB9WIfteCE",
-  adminRole: "7ymi51251Bc5Njqg5sPtR46512txEtHkZR3t62"
+  adminRole: [
+    { uid: "qweqqwgqwgq", name: 'o' },
+    { uid: "gqssadasdas", name: 'dan' }
+  ]
 };
 
 export default config;

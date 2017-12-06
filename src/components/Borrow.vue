@@ -61,6 +61,7 @@ export default Vue.extend({
   },
   methods: {
     borrowBook () {
+      booksRef.child(this.bookKey).update({ borrow: true });
       userBorrowsRef.child(this.bookKey).update({currentlyAt: this.currentUser.uid, date: new Date(), email: this.currentUser.email, value: _.find(this.books, ['.key', this.bookKey]).value});
       this.buttonContent = "Borrowed"
       this.isItDisabled = true;
@@ -114,7 +115,7 @@ export default Vue.extend({
       this.txt = "There is currently no one in possesion of the book."
       //remove from db
       userBorrowsRef.child(this.bookKey).remove();
-
+      booksRef.child(this.bookKey).update({ borrow: false });
     }
   }
 });

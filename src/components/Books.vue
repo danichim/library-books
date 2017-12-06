@@ -4,7 +4,7 @@
       <div class="product-list-container clearfix">
         <article class="product-list-item clearfix" v-for="book in filterBooks">
           <a @click="details(book['.key'])" class="product-list-item-image-container cursor-hover">
-              <img class="product-list-item-image" :src="book.image.thumbnail" alt="alternative-image">
+              <img :class="{ grayscale : book.borrow }" class="product-list-item-image" :src="book.image.thumbnail" alt="alternative-image">
           </a>
           <div class="product-list-item-price">
             <div class="price-container">
@@ -14,7 +14,7 @@
               <span class="price-good">{{book.pageCount}}</span>
             </div>
           </div>
-          <div class="product-list-item-info">
+          <div  :class="{ borrow : book.borrow }" class="product-list-item-info">
             <h1 class="product-list-item-title">
               {{ book.value }}
             </h1>
@@ -116,6 +116,15 @@
   });
 </script>
 <style>
+  .borrow {
+    border: 1px salmon solid;
+    padding-left: 10px;
+  }
+  .grayscale {
+     filter: gray; /* IE6-9 */
+    -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+    filter: grayscale(1);
+  }
   .product-list-container {
     border-bottom: solid 1px #b8b8b8;
     margin-bottom: 1.875em;

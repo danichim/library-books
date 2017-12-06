@@ -3,6 +3,7 @@ import firebaseUiAuthCss from './vendors/firebase-ui-auth.css'; /* eslint no-unu
 import firebaseui from 'firebaseui';
 import { database } from './firebaseInstance';
 import config from '../config/globalConf';
+import _ from "lodash";
 
 const user = {
   displayName: '',
@@ -44,7 +45,9 @@ const init = function init() {
       user.emailVerified = theUser.emailVerified;
       user.photoURL = theUser.photoURL;
       user.uid = theUser.uid;
-      user.administrator = theUser.uid === config.adminRole;
+      user.administrator = !_.find(config.adminRole, function (o) {
+        return o.uid === theUser.uid
+      }) ? false : true;
       user.lastLoggedIn = new Date();
       user.intern = theUser.email.includes('@assist.ro');
       usersRef.child(firebase.auth().currentUser.uid).update(user);
