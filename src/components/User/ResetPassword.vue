@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h3 class="text-center">Reset your password</h3>
+      <h3 class="text-center">Forgot password ? <el-button @click="showResetPassword" type="text">Click here!</el-button></h3>
       <el-row v-if="showButton">
         <el-col :span="12" :offset="6">
           <el-col :span="12" :offset="4">
@@ -32,7 +32,7 @@ export default {
       return {
         text: '',
         fieldEmail: '',
-        showButton: true
+        showButton: false
       };
     },
     methods: {
@@ -41,7 +41,12 @@ export default {
           firebase.auth().sendPasswordResetEmail(this.fieldEmail+'@assist.ro');
           this.text = `An email was sent to your address: <strong>${this.fieldEmail}@assist.ro</strong>`;
           this.showButton = false;
+        } else {
+          this.text = `The email address need to be more then 3 chars: <strong>${this.fieldEmail}@assist.ro</strong>`;
         }
+      },
+      showResetPassword() {
+        this.showButton = true;
       }
     },
 };

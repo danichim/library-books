@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <div class="container">
-      <div class="footer-main" v-if="!currentUser.emailVerified"  @click="resendEmail">
+      <div class="footer-main" v-if="!currentUser.emailVerified && currentUser.uid !== ''"  @click="resendEmail">
         <div class="footer-main-title">Resend validate?</div>
         <div class="footer-main-link" v-html="txt">
         </div>
