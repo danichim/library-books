@@ -122,7 +122,8 @@
             maturityRating: e.volumeInfo.maturityRating || '',
             mainCategory: e.volumeInfo.mainCategory || '',
             language: e.volumeInfo.language || '',
-            ISBN: e.volumeInfo.industryIdentifiers || ''
+            ISBN: e.volumeInfo.industryIdentifiers || '',
+            borrow: false
           }
         }));
       }).catch(ex => {
