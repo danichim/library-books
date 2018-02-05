@@ -8,14 +8,13 @@ RUN \
   yum clean all &&\
   yum update -y &&\
   yum install -y curl git wget &&\
-  yum install -y java-1.7.0-openjdk &&\
   yum group install "Development Tools" -y &&\
   yum clean all
 
 # Install nvm with node and npm
 
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 4.0.0
+ENV NODE_VERSION 9.4.0
 
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash \
     && source $NVM_DIR/nvm.sh \
