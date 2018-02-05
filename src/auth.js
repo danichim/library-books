@@ -3,6 +3,7 @@ import firebaseUiAuthCss from './vendors/firebase-ui-auth.css'; /* eslint no-unu
 import firebaseui from 'firebaseui';
 import { database } from './firebaseInstance';
 import config from '../config/globalConf';
+import _ from "lodash";
 
 const user = {
   displayName: '',
@@ -11,7 +12,7 @@ const user = {
   photoURL: '',
   uid: '',
   administrator: false,
-  intern: false
+  intern: false,
 };
 
 const usersRef = database.ref('users');
@@ -38,20 +39,18 @@ const initAuthUI = function initAuthUI() {
 const init = function init() {
   firebase.auth().onAuthStateChanged((theUser) => {
     if (theUser) {
+      firebase.auth().currentUser.reload()
       user.displayName = theUser.displayName;
       user.email = theUser.email;
       user.emailVerified = theUser.emailVerified;
       user.photoURL = theUser.photoURL;
       user.uid = theUser.uid;
-      user.administrator = theUser.uid === config.adminRole;
+      user.administrator = !_.find(config.adminRole, function (o) {
+        return o.uid === theUser.uid
+      }) ? false : true;
       user.lastLoggedIn = new Date();
       user.intern = theUser.email.includes('@assist.ro');
-      if (!theUser.emailVerified && user.intern && !theUser.sentEmail) {
-        firebase.auth().currentUser.sendEmailVerification();
-        user.sentEmail = true;
-      }
       usersRef.child(firebase.auth().currentUser.uid).update(user);
-      firebase.auth().currentUser.reload()
     } else {
       user.displayName = '';
       user.email = '';
@@ -60,7 +59,6 @@ const init = function init() {
       user.uid = '';
       user.administrator = false;
       user.intern = false;
-      user.sentEmail = false;
       user.createdDate = new Date();
       initAuthUI();
     }

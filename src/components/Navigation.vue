@@ -6,7 +6,7 @@
     <el-menu-item v-if="isLoggedIn" index="books">My Books</el-menu-item>
     <el-menu-item index="resources">Resources</el-menu-item>
     <el-menu-item index="nas">NAS</el-menu-item>
-    <el-submenu v-if="isLoggedIn" class="toggle-login2" index="2">
+    <el-submenu v-if="isLoggedIn" class="toggle-login2 pull-right" index="2">
       <template slot="title">{{ displayName }}</template>
       <el-menu-item index="2-2" v-on:click="logout">Logout</el-menu-item>
     </el-submenu>
@@ -54,20 +54,24 @@
 </script>
 
 <style>
-  .el-menu--horizontal .el-menu-item a, .el-menu--horizontal .el-menu-item a:hover {
-    text-decoration: none;
-  }
-  .toggle-login {
-    float: right!important;
-    margin-right: 2em!important;
-  }
-  .logo-header {
-    margin-left: 2em!important;
-    background-color: #fff;
-    opacity: 1;
-  }
-  .logo-header:hover {
-    opacity: 0.7;
-    background-color: #fff!important;
-  }
+.pull-right {
+  float: right!important;
+  margin-right: 2em!important;
+}
+.el-menu--horizontal .el-menu-item a, .el-menu--horizontal .el-menu-item a:hover {
+  text-decoration: none;
+}
+.toggle-login {
+  float: right!important;
+  margin-right: 2em!important;
+}
+.logo-header {
+  margin-left: 2em!important;
+  background-color: #fff;
+  opacity: 1;
+}
+.logo-header:hover {
+  opacity: 0.7;
+  background-color: #fff!important;
+}
 </style>

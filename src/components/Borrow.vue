@@ -48,6 +48,7 @@ export default Vue.extend({
       isItDisabled: false,
       isItAtMe: false,
       currentUser: firebase.auth().currentUser,
+      currentBookInfo: '',
       txt: ''
     };
   },
@@ -61,9 +62,25 @@ export default Vue.extend({
   },
   methods: {
     borrowBook () {
-      userBorrowsRef.child(this.bookKey).update({currentlyAt: this.currentUser.uid, date: new Date(), email: this.currentUser.email, value: _.find(this.books, ['.key', this.bookKey]).value});
-      this.buttonContent = "Borrowed"
-      this.isItDisabled = true;
+      //TODO: refactor this function
+      if (!this.currentBookInfo.hasOwnProperty('historyBorrow')) {
+        booksRef.child(this.bookKey).update({ borrow: true, historyBorrow: [this.currentUser.uid] });
+        userBorrowsRef.child(this.bookKey).update({currentlyAt: this.currentUser.uid, date: new Date(), email: this.currentUser.email, value: _.find(this.books, ['.key', this.bookKey]).value});
+        this.buttonContent = "Borrowed"
+        this.isItDisabled = true;
+      } else {
+        var self = this;
+        var checkIfAlreadyReadBook = _.find(this.currentBookInfo.historyBorrow, function(h) { return h == self.currentUser.uid })
+        if (checkIfAlreadyReadBook) {
+          booksRef.child(this.bookKey).update({ borrow: true });
+        } else {
+          this.currentBookInfo.historyBorrow.push(this.currentUser.uid);
+          booksRef.child(this.bookKey).update({ borrow: true, historyBorrow: this.currentBookInfo.historyBorrow });
+        }
+        userBorrowsRef.child(this.bookKey).update({currentlyAt: this.currentUser.uid, date: new Date(), email: this.currentUser.email, value: _.find(this.books, ['.key', this.bookKey]).value});
+        this.buttonContent = "Borrowed"
+        this.isItDisabled = true;
+      }
     },
     contactBooked () {
       let currentBookLet = _.find(this.userBorrows, ['.key', this.bookKey]);
@@ -114,8 +131,18 @@ export default Vue.extend({
       this.txt = "There is currently no one in possesion of the book."
       //remove from db
       userBorrowsRef.child(this.bookKey).remove();
-
+      booksRef.child(this.bookKey).update({ borrow: false });
     }
+  },
+  mounted() {
+    var self = this;
+    booksRef.on('value', (c) => { //when data arrived
+      c.forEach(function(noteSnapshot) {
+        if (self.bookKey === noteSnapshot.getKey()) {
+          self.currentBookInfo = noteSnapshot.val();
+        }
+      });
+    })
   }
 });
 </script>
