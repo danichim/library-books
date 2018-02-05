@@ -2,4 +2,4 @@
 
 npm run build
 
-npm run dev
+http-server ./dist
