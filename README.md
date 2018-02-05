@@ -1,7 +1,7 @@
 # library
 
 > A simple library application. Keep tabs on your organization's book collection. Find a book you'd like to read from the collection, borrow, return.
-
+Node v 9.4.0
 
 ## TODO
 ...a todo list on trello?
