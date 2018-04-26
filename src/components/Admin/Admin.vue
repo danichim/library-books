@@ -10,6 +10,7 @@
           </el-row>
           <books></books>
         </div>
+        <add-book></add-book>
       </el-col>
     </el-row>
   </div>
@@ -18,9 +19,10 @@
 
 <script>
   import Books from '../Books'
-  import Search from './Search';
+  import Search from './Search'
+  import AddBook from './AddBook'
 
   export default {
-    components: { Books, Search }
+    components: { Books, Search,  AddBook}
   };
 </script>
