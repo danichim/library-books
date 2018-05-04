@@ -1,5 +1,5 @@
 const config = {
-  apiKey: "AIzaSyB7PJlez2-ZX3SZ_v8tWG8LFtnjqKzLyLA",
+  apiKey: "",
   authDomain: "books-assist.firebaseapp.com",
   databaseURL: "https://books-assist.firebaseio.com",
   projectId: "books-assist",
