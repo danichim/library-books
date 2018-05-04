@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import firebaseUiAuthCss from './vendors/firebase-ui-auth.css'; /* eslint no-unused-vars: 0 */
 import firebaseui from 'firebaseui';
 import { database } from './firebaseInstance';
-import config from '../config/globalConf';
+import config from '../config/firebase';
 import _ from "lodash";
 
 const user = {

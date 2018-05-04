@@ -11,6 +11,7 @@
       :on-icon-click="addBook"
       custom-item="my-item-en"
     ></el-autocomplete>
+    <el-button type="primary" @click="showAddBook">Add custom book</el-button>
   </div>
 </template>
 
@@ -18,12 +19,6 @@
 
   .container-search {
     margin-top: 9px;
-  }
-  .my-autocomplete ul li .authors {
-    /* margin-left: 15px;
-    font-size: 12px;
-    color: #b4b4b4;
-    line-height: 12px; */
   }
   .my-autocomplete ul li {
     margin: 4px 0;
@@ -34,7 +29,7 @@
   }
   .container-search .el-autocomplete {
     width: 70% !important;
-    display: block !important;
+    display: inline-block !important;
     margin: 10px auto !important;
   }
   .el-autocomplete-suggestion li img {
@@ -75,8 +70,9 @@
 <script>
   import Vue from 'vue';
   import { mapActions } from 'vuex';
-  import config from '../../../config/globalConf';
+  import config from '../../../config/firebase';
   import { database } from '../../firebaseInstance';
+  import eventHub from "../../EventHub";
 
   const booksRef = database.ref('books');
 
@@ -142,19 +138,24 @@
       };
     },
     methods: {
-      addBook () {
+      addBook (newBook) {
         //button is now disabled
         this.disabled = true;
         //clears the field..
         this.textfieldBook = '';
-        if (this.selectedItem) {
-          booksRef.push(this.selectedItem);
+        if (newBook || this.selectedItem) {
+          let book = newBook || this.selectedItem
+          console.log(book)
+          booksRef.push(book);
         }
         this.$notify({
           title: 'Added',
           message: 'Successfuly added book!',
           type: 'success'
         });
+      },
+      showAddBook () {
+        eventHub.$emit("open-add-book-modal", {});
       },
       querySearchAsync,
       createFilter (queryString) {
@@ -166,7 +167,10 @@
         this.selectedItem = item;
         this.disabled = false;
       }
-    }
+    },
+    created() {
+      eventHub.$on('add-book', this.addBook)
+    },
 
   });
 </script>
