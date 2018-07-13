@@ -143,11 +143,11 @@
         this.disabled = true;
         //clears the field..
         this.textfieldBook = '';
-        if (newBook || this.selectedItem) {
-          let book = newBook || this.selectedItem
-          console.log(book)
-          booksRef.push(book);
+        let book = this.selectedItem;
+        if (newBook.hasOwnProperty('title')) {
+          let book = newBook;
         }
+        booksRef.push(book);
         this.$notify({
           title: 'Added',
           message: 'Successfuly added book!',
