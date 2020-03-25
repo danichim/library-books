@@ -3571,8 +3571,8 @@ lru-cache@^4.0.1:
     yallist "^2.0.0"
 
 macaddress@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.9.tgz#3579b8b9acd5b96b4553abf0f394185a86813cb3"
 
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
@@ -3720,6 +3720,10 @@ mocha@^3.2.0:
 moment@2.x.x:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
+
+moment@^2.24.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
 
 ms@0.7.1:
   version "0.7.1"
@@ -5547,6 +5551,10 @@ vuefire@^1.3.1:
 vuex@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-2.1.3.tgz#4f613f8425a274b85b79a83cd28b960938bf1670"
+
+vuexfire@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/vuexfire/-/vuexfire-0.4.0.tgz#67b4bf3f34c8f6913261155e5385431460d3864d"
 
 watchpack@^1.2.0:
   version "1.3.1"
